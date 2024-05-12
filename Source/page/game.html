@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./../style.css">
+    <title>Jogo da velha</title>
+
+
+</head>
+
+<body>
+
+    <audio src="./../sounds/blop1.mp3"></audio>
+    <audio src="./../sounds/footsteps_in_the_snow.wav"></audio>
+
+    <div class="placar">
+        <output id="player-info">
+
+            <select>
+                <option value="x">X</option>
+                <option value="o">o</option>
+                <option value="#">#</option>
+                <option value="*">*</option>
+            </select>
+
+
+        </output>
+
+        <select id="mode">
+            <option>pc</option>
+            <option>2p</option>
+        </select>
+
+        <output id="player-info">
+            <select>
+                <option value="o">o</option>
+                <option value="x">X</option>
+                <option value="#">#</option>
+                <option value="*">*</option>
+            </select>
+
+        </output>
+    </div>
+
+    <div class="screen">
+
+
+
+
+
+        <table>
+            <tr>
+                <td>o</td>
+                <td>o</td>
+                <td>x</td>
+
+            </tr>
+            <tr>
+                <td>x</td>
+                <td>o</td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>x</td>
+                <td>x</td>
+                <td>o</td>
+            </tr>
+
+        </table>
+
+
+
+    </div>
+    <div class="footer">
+        <button onclick="sair()">sair</button>
+        <button>opcoes</button>
+
+    </div>
+    <!-- dialogeu vencedor -->
+    <dialog>
+        <div>
+            <h1>Temos um vencedor</h1>
+            <output id="result">Nome X</output>
+            <img src="./../icons/star.png">
+
+
+            <div class="options">
+                <button onclick="sair_popup()">Sair</button>
+                <button>continuar</button>
+            </div>
+
+        </div>
+    </dialog>
+
+    <!-- dialogeu empate -->
+    <dialog>
+        <div>
+            <h1>Temos um Empate!</h1>
+            <output id="result">Nome X</output>
+            <img src="./../icons/empate.png">
+
+
+            <div class="options">
+                <button onclick="sair_popup()">Sair</button>
+                <button>continuar</button>
+            </div>
+
+        </div>
+
+
+
+
+
+    </dialog>
+</body>
+<script>
+
+
+
+    let tables = document.querySelectorAll("td");
+    let player_turn = 1
+
+    let mod_multiplayer = false
+    let mod_pc = true
+
+    let jogador1
+    let jogador2
+
+    const som_click = document.querySelector("audio")
+    const som_fundo = document.querySelectorAll("audio")[1]
+
+    //cores
+    const cor_quadro_default = "rgba(197, 234, 129, 0.484)"
+
+    iniciar()
+    limpar_campo()
+
+    var selectJogador = document.querySelectorAll("select")
+
+    var mode_game = document.querySelector("#mode")
+
+    //modo do game 
+    mode_game.addEventListener("change", () => {
+
+
+
+        if (mode_game.value == "pc") {
+
+            mod_pc = true
+
+            mod_multiplayer = false
+
+        }
+        else if (mode_game.value == "2p") {
+            mod_multiplayer = true
+            mod_pc = false
+
+        }
+
+    })
+
+    //selecionar os jogadores
+
+    selectJogador[0].addEventListener("change", () => {
+
+        jogador1 = selectJogador[0].value
+
+        if (jogador1 != jogador2) {
+            selectJogador[0].disabled = true
+            iniciar()
+        }
+
+        else {
+            alert("escolha um sinal diferente do outro!")
+        }
+
+
+    })
+    selectJogador[2].addEventListener("change", () => {
+
+        jogador2 = selectJogador[2].value
+
+        if (jogador2 != jogador1) {
+            selectJogador[2].disabled = true
+            iniciar()
+        }
+        else {
+            alert("escolha um sinal diferente do outro!")
+        }
+
+    })
+
+
+    //iniciar o jogo
+
+    function iniciar() {
+
+        if (jogador1 == null || jogador2 == null) {
+
+            const campo = document.querySelector("table")
+            campo.style.display = "none"
+
+        }
+        else {
+            const campo = document.querySelector("table")
+            campo.style.display = "flex"
+        }
+
+    }
+    //inteligencia artificial
+
+    function inteligencia() {
+
+
+        var insertTable = Math.floor(Math.random() * 9) + 1
+        var procurar = true
+        var colunas_preenchidas = 0
+
+
+        while (procurar == true) {
+
+            insertTable = Math.floor(Math.random() * 9) + 1
+
+
+
+            if (colunas_preenchidas == 9) {
+
+                procurar = false
+                popupEmpate()
+
+            }
+
+            if (colunas[insertTable - 1].textContent == "") {
+
+                colunas[insertTable - 1].textContent = jogador2
+                player_turn *= -1
+                procurar = false
+                verificar_vencedor(jogador1)
+                verificar_vencedor(jogador2)
+            }
+
+            colunas.forEach((items, index) => {
+                if (items.textContent != "") {
+                    colunas_preenchidas += 1
+
+                }
+
+            })
+
+
+        }
+
+
+
+    }
+
+    //atualizar dados do novo jogo
+    function atualizar() {
+
+        selectJogador.forEach((item, index) => {
+
+            item.disabled = false
+
+
+        })
+
+    }
+
+
+    //limpar o campo do jogo
+    function limpar_campo() {
+        som_fundo.play()
+        player_turn = 1
+
+        tables.forEach((table) => {
+
+            table.textContent = ""
+            table.style.background = cor_quadro_default
+            table.style = ":hover{background:" + cor_quadro_default + ";}"
+
+
+        })
+
+
+    }
+
+
+    //verifique a cada jogado um vencedor
+    function verificar_vencedor(player) {
+
+        //cor de quadros vencedor
+        const color_win = "crimson"
+
+
+        //verificar de forma horizontal
+        if (tables[0].textContent == player & tables[1].textContent == player & tables[2].textContent == player) {
+            popupVencedor(player)
+
+            tables[0].style.background = color_win
+            tables[1].style.background = color_win
+            tables[2].style.background = color_win
+
+        }
+        if (tables[3].textContent == player & tables[4].textContent == player & tables[5].textContent == player) {
+            popupVencedor(player)
+            tables[3].style.background = color_win
+            tables[4].style.background = color_win
+            tables[5].style.background = color_win
+        }
+        if (tables[6].textContent == player & tables[7].textContent == player & tables[8].textContent == player) {
+            popupVencedor(player)
+            tables[6].style.background = color_win
+            tables[7].style.background = color_win
+            tables[8].style.background = color_win
+        }
+        //verificar de forma vertical
+        if (tables[0].textContent == player & tables[3].textContent == player & tables[6].textContent == player) {
+            popupVencedor(player)
+            tables[0].style.background = color_win
+            tables[3].style.background = color_win
+            tables[6].style.background = color_win
+        }
+
+        if (tables[1].textContent == player & tables[4].textContent == player & tables[7].textContent == player) {
+            popupVencedor(player)
+            tables[1].style.background = color_win
+            tables[4].style.background = color_win
+            tables[7].style.background = color_win
+        }
+        if (tables[2].textContent == player & tables[5].textContent == player & tables[8].textContent == player) {
+            popupVencedor(player)
+            tables[2].style.background = color_win
+            tables[5].style.background = color_win
+            tables[8].style.background = color_win
+        }
+        //verificar de forma vertical inclanada
+
+        if (tables[0].textContent == player & tables[4].textContent == player & tables[8].textContent == player) {
+            popupVencedor(player)
+            tables[0].style.background = color_win
+            tables[4].style.background = color_win
+            tables[8].style.background = color_win
+        }
+
+        if (tables[2].textContent == player & tables[4].textContent == player & tables[6].textContent == player) {
+            popupVencedor(player)
+            tables[2].style.background = color_win
+            tables[4].style.background = color_win
+            tables[6].style.background = color_win
+        }
+
+
+
+
+
+    }
+
+    /*insercao de dados*/
+    const colunas = document.querySelectorAll("td");
+
+    tables.forEach((table) => {
+
+
+        table.addEventListener("click", () => {
+
+            var content = table.textContent
+
+
+
+            if (player_turn == 1 & content == "") {
+                som_click.play()
+                content = jogador1
+
+                table.textContent = content
+                player_turn *= -1
+                verificar_vencedor(jogador1)
+                verificar_vencedor(jogador2)
+                return
+            }
+            else if (player_turn == -1 & content == "" && mod_multiplayer == true) {
+                som_click.play()
+                content = jogador2
+                table.textContent = content
+                player_turn *= -1
+                verificar_vencedor(jogador1)
+                verificar_vencedor(jogador2)
+                return
+            }
+
+
+        })
+
+
+
+    })
+
+    colunas.forEach((items) => {
+
+        items.addEventListener("click", () => {
+
+            if (!mod_multiplayer && mod_pc) {
+                if (player_turn == -1) {
+                    setTimeout(() => {
+                        inteligencia()
+                        som_click.play()
+                    }, 1500)
+
+                }
+            }
+
+
+
+        })
+    })
+
+
+
+
+    //popup de vencedor
+    function popupVencedor(result) {
+        player_turn = 0
+        const dialog = document.querySelector("dialog")
+        const nomeVencedor = document.querySelector("#result")
+        nomeVencedor.textContent = result
+        atualizar()
+
+        setTimeout(() => {
+            dialog.showModal()
+            limpar_campo()
+        }, 2000)
+
+
+    }
+    //popup de vencedor
+    function popupEmpate() {
+
+        const dialog = document.querySelectorAll("dialog")[1]
+        const nomeVencedor = document.querySelectorAll("#result")[1]
+        nomeVencedor.textContent = jogador1 + " vs " + jogador2
+        atualizar()
+
+        setTimeout(() => {
+            dialog.showModal()
+            limpar_campo()
+        }, 2000)
+
+
+    }
+
+
+
+
+    //fechar o popup
+    function sair_popup() {
+        const dialog = document.querySelector("dialog")
+        var resposta = confirm("quer sair ?")
+
+        if (resposta) {
+            window.location.href = "http://127.0.0.1:5500/indexgame.html"
+
+            dialog.close()
+        }
+
+    }
+
+
+    function sair() {
+        window.location.href = "http://127.0.0.1:5500/indexgame.html"
+
+    }
+
+</script>
+
+</html>

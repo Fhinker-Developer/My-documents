@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="shortcut icon" href="ico.ico" type="image/x-icon">
+
+
+
+    <style>
+        * {
+            position: relative;
+            padding: 0;
+            margin: 0;
+            outline: 0;
+            border: 0;
+            transition: 0.5s linear;
+        }
+
+        @font-face {
+            font-family: giz;
+            src: url("./Source/fonts/Chalk-Regular.ttf");
+        }
+
+
+
+        body {
+
+            width: 100%;
+            height: 100vh;
+            background: rgb(59, 126, 76);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        .login {
+
+
+            background: rgb(38, 97, 55);
+            box-shadow: 0 0 110px rgb(38, 97, 55);
+            width: 80%;
+            height: 60%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            & h1 {
+                z-index: 1;
+                position: absolute;
+                top: 0;
+                text-align: center;
+                font-family: giz;
+                font-size: 80px;
+                color: white;
+
+            }
+
+            & .vbox {
+                position: absolute;
+                top: 100px;
+                width: 400px;
+                height: 400px;
+
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+
+                gap: 8px;
+
+                & img {
+
+                    filter: grayscale(0.8);
+                }
+
+                & img:hover {
+
+                    transform: scale(1.5);
+                    filter: grayscale(0);
+
+                    z-index: 100;
+                }
+
+
+            }
+
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+
+    <div class="login">
+
+        <h1>Joguinho da velha x/o</h1>
+
+
+        <div class="vbox">
+
+            <img src="source/icons/orange/Play.png" alt="">
+            <img src="source/icons/orange/settings_normal.png" alt="">
+            <img src="source/icons/orange/Close.png" alt="">
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <script>
+
+
+        const btn_img = document.querySelectorAll("img")
+
+
+
+
+
+        btn_img[0].addEventListener("click", () => {
+            location.href = "Source/page/game.html"
+        })
+
+        btn_img[2].addEventListener("click", () => {
+            window.confirm("quer sair do jogo?")
+
+
+        })
+
+    </script>
+</body>
+
+</html>
