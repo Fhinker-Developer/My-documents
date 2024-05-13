@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./Source/style.css">
     <link rel="shortcut icon" href="ico.ico" type="image/x-icon">
 
 
@@ -19,18 +20,31 @@
             transition: 0.5s linear;
         }
 
+
         @font-face {
             font-family: giz;
             src: url("./Source/fonts/Chalk-Regular.ttf");
         }
 
+        @keyframes bounce {
+
+            from {
+                top: 20px;
+            }
+
+            to {
+                top: 32px;
+            }
+
+        }
 
 
         body {
 
             width: 100%;
             height: 100vh;
-            background: rgb(59, 126, 76);
+            background: url("Source/img/1.jpg") no-repeat center black;
+
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,29 +54,38 @@
         .login {
 
 
-            background: rgb(38, 97, 55);
-            box-shadow: 0 0 110px rgb(38, 97, 55);
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.497);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 1px 1px 10px rgb(233, 102, 102);
             width: 80%;
-            height: 60%;
+            height: 90%;
 
             display: flex;
             justify-content: center;
             align-items: center;
 
             & h1 {
+                transition: 0.3s linear;
                 z-index: 1;
                 position: absolute;
-                top: 0;
+                top: 32px;
+
                 text-align: center;
                 font-family: giz;
                 font-size: 80px;
-                color: white;
+
+                color: rgb(246, 177, 58);
+                text-shadow: 2px 2px 4px rgb(23, 14, 111), 2px 2px 4px rgb(23, 14, 111), 2px 2px 4px rgb(23, 14, 111);
+
+                animation: bounce 1s alternate ease-in-out infinite;
 
             }
 
             & .vbox {
                 position: absolute;
-                top: 100px;
+
                 width: 400px;
                 height: 400px;
 
@@ -74,22 +97,45 @@
 
                 gap: 8px;
 
-                & img {
 
-                    filter: grayscale(0.8);
+
+
+                & button {
+
+                    font-size: 48px;
+                    margin: 8px;
                 }
 
-                & img:hover {
-
-                    transform: scale(1.5);
-                    filter: grayscale(0);
-
-                    z-index: 100;
-                }
 
 
             }
 
+        }
+
+        #like {
+            background: rgb(97, 97, 233) url("like.png") no-repeat center;
+            text-align: left;
+            box-shadow: 0 10px 1px rgb(44, 32, 218);
+        }
+
+        #play {
+            background: url("play.png") center no-repeat rgb(224, 188, 29);
+            box-shadow: 0 10px 1px rgb(199, 156, 16);
+
+        }
+
+        #exit {
+            background: url("close.png") center no-repeat rgb(233, 80, 80);
+            box-shadow: 0 10px 1px rgb(128, 11, 0);
+
+        }
+
+        p {
+            position: absolute;
+            bottom: 32px;
+            color: white;
+            font-size: 16px;
+            font-family: sans-serif;
         }
     </style>
 
@@ -103,14 +149,18 @@
 
         <h1>Joguinho da velha x/o</h1>
 
- 
-        <div class="vbox">
-<a href="./Source/page/game.html">iniciar o jogo</a>
-            <img src="./source/icons/orange/Play.png" alt="">
-            <img src="./source/icons/orange/settings_normal.png" alt="">
-            <img src="./source/icons/orange/Close.png" alt="">
 
+
+        <div class="vbox">
+            <button id="play"></button>
+            <button id="like"></button>
+            <button id="exit"></button>
         </div>
+
+        <p>
+            @Fhinker developer 2024<br>
+            joguinho da velha version 0.1
+        </p>
 
 
     </div>
@@ -121,18 +171,20 @@
     <script>
 
 
-        const btn_img = document.querySelectorAll("img")
+        const btn = document.querySelectorAll("button")
 
 
 
 
 
-        btn_img[0].addEventListener("click", () => {
-            location.href = "./Source/page/game.html"
+        btn[0].addEventListener("click", () => {
+            location.href = "Source/page/game.html"
         })
 
-        btn_img[2].addEventListener("click", () => {
-            window.confirm("quer sair do jogo?")
+        btn[2].addEventListener("click", () => {
+
+
+            history.go()
 
 
         })
