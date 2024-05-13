@@ -25,7 +25,7 @@ body {
     align-items: center;
     flex-direction: column;
     flex-wrap: wrap;
-    background: url("./img/0.jpg") no-repeat center;
+    background: url("./img/bg.jpg") no-repeat center;
     background-color: rgb(20, 19, 19);
 
 
